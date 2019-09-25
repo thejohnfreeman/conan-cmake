@@ -86,9 +86,12 @@ class CMakeListsTxtAttributes:
                 sp.run(
                     [
                         'cmake',
+                        '-DCONAN_EXPORTED=YES',
                         *toolchain_args,
                         str(source_dir),
                     ],
+                    stdout=sp.DEVNULL,
+                    stderr=sp.DEVNULL,
                     cwd=step1_dir,
                 )
 
@@ -100,9 +103,12 @@ class CMakeListsTxtAttributes:
                     sp.run(
                         [
                             'cmake',
+                            '-DCONAN_EXPORTED=YES',
                             f'-DSTEP1_DIR={step1_dir}',
                             str(data_dir / 'configure'),
                         ],
+                        stdout=sp.DEVNULL,
+                        stderr=sp.DEVNULL,
                         cwd=step2_dir,
                     )
 
