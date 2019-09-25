@@ -17,17 +17,26 @@ from autorecipes.descriptors import (
 from autorecipes.stdlib import Object, named, zero_or_more
 
 
+def prepare_requires(requires):
+    result = ""
+    for line in requires:
+        if isinstance(line, tuple):
+            result += "{}\n".format(line[0])
+        else:
+            result += "{}\n".format(line)
+    return result
+
 def generate_conanfile_txt(requires, build_requires, generators) -> str:
     """Generate contents of a ``conanfile.txt``."""
     text = ''
     if requires:
         text += '[requires]\n'
-        text += ''.join(f'{line}\n' for line in requires)
+        text += prepare_requires(requires)
     if build_requires:
         text += '[build_requires]\n'
-        text += ''.join(f'{line}\n' for line in build_requires)
+        text += prepare_requires(build_requires)
     if text and generators:
-        text += '[generators]'
+        text += '[generators]\n'
         text += ''.join(f'{line}\n' for line in generators)
     return text
 
